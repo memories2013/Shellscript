@@ -1,0 +1,167 @@
+                       Functions Practice Problems
+
+1. Help user find degF or degC based on their Conversion Selection. Use
+   Case Statement and ensure that the inputs are within the Freezing Point (
+   0 °C / 32 °F ) and the Boiling Point of Water ( 100 °C / 212 °F )
+   a. degF = (degC * 9/5) + 32
+   b. degC = (degF – 32) * 5/9
+
+Answer-
+
+#!/bin/bash -x
+function degF_to_degC(){
+if [[ ($1 -ge 32 && $1 -le 212) ]]
+then
+degC=`echo "scale=2;($1-32.0)*5/9" | bc`
+else
+echo "temperature entered is beyond the limits!"
+fi
+}
+function degC_to_degF(){
+if [[ ($1 -ge 0 && $1 -le 100) ]]
+then
+degF=`echo "scale=2;($1*9.0/5)+32" | bc`
+else
+echo "temperature entered is beyond the limits!"
+fi
+}
+read -p "Enter the temperature: " T
+read -p "Select the option: 1) degF to degC 2) degC to degF " option
+degF_to_degC=1
+degC_to_degF=2
+case "$option" in
+$degF_to_degC)
+degF_to_degC $T
+;;
+$degC_to_degF)
+degC_to_degF $T
+;;
+*)
+echo "invalid option!"
+esac
+
+2. Write a function to check if the two numbers are Palindromes
+Answer-
+#!/bin/bash
+
+echo "Enter a first number:"
+read number1
+
+echo "Enter a second number:"
+read number2
+
+sum=0
+reminder=0
+
+function palindrome()
+{
+while [ $number1 -gt 0 ]
+do
+    reminder=$(($number1%10))
+    sum=$((($sum*10)+$reminder))
+    number1=$(($number1/10))
+done
+   if [ $number2 -eq $sum ]
+   then
+     echo "Palindrome"
+   else
+    echo "NOO"
+   fi
+}
+palindrome
+
+
+3. Take a number from user and check if the number is a Prime then show
+   that its palindrome is also prime
+   a. Write function check if number is Prime
+
+#!/bin/bash
+result=1
+function prime()
+{
+number=$(($1))
+for ((  counter=2; counter<$number; counter++ ))
+do
+   if [  $(($number%$counter))  -eq 0 ]
+   then
+      result=$(($result+1))
+   fi
+done
+
+if [ $result -eq 1 ]
+then
+   echo "prime"
+else
+   echo "noo"
+fi
+}
+pal 10
+
+
+b. Write function to get the Palindrome.
+Answer-
+
+#!/bin/bash
+sum=0
+reminder=0
+
+function palindrome()
+{
+    number=$(($1))
+    temp=$number
+    while  [ $number -gt 0 ]
+    do
+       reminder=$(($number%10))
+       sum=$((($sum*10)+$reminder))
+       number=$(($number/10))
+    done
+    if [  $temp  -eq $sum  ]
+     then
+       echo "Palindrome"
+     else
+      echo "Noo"
+    fi
+
+}
+palindrome 12
+
+c. Check if the Palindrome number is also prime
+Answe-
+#!/bin/bash
+echo "Enter a number:"
+read number
+
+sum=0
+reminder=0
+temp=$number
+result=1
+
+while [ $number -gt 0 ]
+do
+   reminder=$(($number%10))
+   sum=$((($sum*10)+$reminder))
+   number=$(($number/10))
+done
+
+if [ $temp -eq $sum ]
+then
+    echo "Integer Palindrome"
+else
+  echo "Not a palindrome"
+fi
+
+for(( counter=2; counter<$temp; counter++ ))
+do
+    if [ $(($temp%$counter))  -eq 0 ]
+    then
+    result=$(($result+1))
+    fi
+done
+
+if [ $result -eq 1 ]
+then
+   echo "and prime number"
+else
+   echo "but Not a  prime number "
+fi
+
